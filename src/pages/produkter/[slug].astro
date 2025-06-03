@@ -1,0 +1,209 @@
+---
+import Header from "../../components/header.astro";
+import Footer from "../../components/footer.astro";
+import Layout from "../../layouts/Layout.astro";
+
+//@ts-ignore
+// Denne funktion henter data fra en ekstern API og genererer statiske sider for hvert produkt
+// Denne funktion skal eksporteres for at Astro kan bruge den til at generere statiske sider
+// getStaticPaths bruges til at generere statiske sider baseret på data fra en API
+// Den henter alle produkter fra en Supabase database og returnerer en liste af stier
+// til hvert produkt baseret på deres slug
+
+const { produkt }: { produkt: Produkt } = Astro.props;
+
+type Produkt = {
+  product_slug: string;
+  product_name: string;
+  description: string;
+  image: string;
+  price: number;
+};
+
+export async function getStaticPaths() {
+  const url =
+    //   endpoint
+    "https://bthhfklfetpicuolnkyp.supabase.co/rest/v1/produkter?select=*";
+
+  // nøgle, der gør at jeg kan hente tabellen
+  const key =
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aGhma2xmZXRwaWN1b2xua3lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTA5MDMsImV4cCI6MjA2MzIyNjkwM30.oCFLXDzG2ItPy4MqhDi5d5nG3EixOPRD-pLPqPKubC4";
+
+  const option = {
+    headers: {
+      apikey: key,
+    },
+  };
+
+  const data = await fetch(url, option).then((res) => res.json());
+
+  console.log(data);
+
+  return data.map((produkt: Produkt) => {
+    return {
+      params: { slug: produkt.product_slug },
+      props: { produkt },
+    };
+  });
+}
+---
+
+<Layout title={produkt.product_name}>
+  <Header />
+  <main>
+    <div class="product_wrapper">
+      <section class="hero">
+        <img
+          class="product_img"
+          src={`/galleri_imgs/${produkt.image}`}
+          alt={produkt.description}
+        />
+      </section>
+      <section class="product_info">
+        <div class="info_text">
+          <h2 class="product_name">{produkt.product_name}</h2>
+          <div class="line"></div>
+          <p>{produkt.description}</p>
+          <p>{produkt.price},-</p>
+          <div class="line"></div>
+          <p>find den på sønder boulevard 59</p>
+          <a class="back_cta" href="/galleri">
+            <img
+              src="/src/assets/arrow_right.svg"
+              alt="en cta knap som forestiller en pil"
+              class="arrow_icon"
+            />
+            tilbage
+          </a>
+          <div class="line"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  /* wrapper til mobile */
+  .product_wrapper {
+    display: block;
+    padding-bottom: 10vh;
+  }
+
+  /* produkt sektion styling */
+  .product_img {
+    width: 100%;
+    max-width: 100%;
+    height: 600px;
+    object-fit: cover;
+  }
+
+  .product_info {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .info_text {
+    display: flex;
+    flex-direction: column;
+    align-items: right;
+    justify-content: right;
+    text-align: right;
+    gap: 0.5rem;
+    margin-right: 0;
+  }
+
+  .line {
+    border-top: 1.5px solid var(--accent);
+    margin: 0.5rem 0 0.5rem;
+  }
+
+  h2 {
+    font-family: "Futura", sans-serif;
+    font-weight: 500;
+    color: var(--black);
+    font-size: clamp(4.5rem, 8vw, 7rem);
+    line-height: 1;
+    margin: 0;
+    padding: 0.3rem 0.5rem;
+    padding-bottom: 1rem;
+  }
+
+  p {
+    font-family: "Futura", sans-serif;
+    color: var(--black);
+    font-size: clamp(0.975rem, 2vw, 1.2rem);
+    line-height: 1.2;
+    margin: 0;
+    padding-right: 0.5rem;
+  }
+
+  a {
+    font-family: "Futura", sans-serif;
+    color: var(--black);
+    font-size: clamp(0.975rem, 2vw, 1.2rem);
+    text-decoration: none;
+    padding-right: 0.5rem;
+  }
+
+  .arrow_icon {
+    width: clamp(1.4rem, 2vw, 1.6rem);
+    height: clamp(1.4rem, 2vw, 1.6rem);
+    margin-right: 0.3rem;
+    transform: scaleX(-1); /* spejlvender pilen så den peger den rigtige vej */
+  }
+
+  .back_cta {
+    display: inline-flex;
+    justify-content: right;
+    /* gap: 0.5rem; - hvis vi vil have lidt mellemrum mellem pil og skrift */
+    transition: all 0.2s ease-in-out;
+    z-index: 0;
+  }
+
+  .back_cta:hover {
+    color: var(--bg);
+    -webkit-text-stroke: 0.5px var(--black); /* Sort outline */
+    text-stroke: 0.5px var(--black); /* Til Firefox (eksperimentel) */
+    scale: 1.025;
+  }
+
+  .arrow_icon:hover {
+    scale: 1.025;
+    opacity: 0.5;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .back_cta.menu-open,
+  .arrow_icon.menu-open {
+    display: none;
+  }
+
+  /* desktop layout */
+  @media screen and (min-width: 800px) {
+    .product_wrapper {
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* to kolonner i desktop version i stedet for en */
+      align-items: start;
+      padding-bottom: 5vh; /* padding inden footer */
+    }
+
+    .product_img {
+      width: 100%;
+      max-width: 100%;
+      height: 850px;
+      object-fit: cover;
+    }
+
+    .info_text {
+      padding-top: 30vh;
+      /* mere luft placeret i midten af grid'et */
+    }
+
+    h2,
+    p,
+    a {
+      padding-right: 0.9rem;
+    }
+  }
+</style>

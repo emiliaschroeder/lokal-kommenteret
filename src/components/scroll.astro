@@ -1,0 +1,138 @@
+---
+const images = [
+  "/src/assets/instagram_01.webp",
+  "/src/assets/instagram_02.webp",
+  "/src/assets/instagram_03.webp",
+  "/src/assets/instagram_04.webp",
+  "/src/assets/instagram_05.webp",
+  "/src/assets/instagram_06.webp",
+  "/src/assets/instagram_07.webp",
+  "/src/assets/instagram_08.webp",
+  "/src/assets/instagram_09.webp",
+  "/src/assets/instagram_10.webp",
+];
+
+const arrowRight = "/src/assets/arrow_right.svg";
+const { text } = Astro.props;
+---
+
+<section class="scroll_galleri">
+  <h3>{text} <a href="https://www.instagram.com/lokalcph/">@lokalcph</a></h3>
+
+  <div class="scroll_container" id="scroll_container">
+    {
+      images.map((img, i) => (
+        <img
+          src={img}
+          alt={`Billede ${i + 1}`}
+          class="galleri_img"
+          width="230"
+          height="280"
+        />
+      ))
+    }
+  </div>
+</section>
+
+<!-- Wrapper for at placere knap til højre med flex -->
+<div class="scroll_button_wrapper">
+  <button class="scroll_button" id="scroll_btn">
+    <img src="/src/assets/arrow_right.svg" alt="Scroll videre" />
+  </button>
+</div>
+
+<!-- JavaScript til scroll-effekt -->
+<script>
+  const button = document.getElementById("scroll_btn");
+  const container = document.getElementById("scroll_container");
+
+  if (button && container) {
+    button.addEventListener("click", () => {
+      container.scrollBy({
+        left: container.offsetWidth * 0.8,
+        behavior: "smooth",
+      });
+    });
+  }
+</script>
+
+<style>
+  .scroll_galleri {
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .scroll_container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 0.5rem;
+    padding-block: 1rem;
+  }
+
+  .galleri_img {
+    flex: 0 0 auto;
+    width: 14rem;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .scroll_button {
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .scroll_button img {
+    width: 1.5rem;
+    height: 1.5rem;
+    align-self: flex-start;
+  }
+  .scroll_button:hover {
+    transform: scale(1.1);
+    transition: transform 0.1s;
+  }
+
+  /* Scroll-knap placeret til højre */
+  .scroll_button_wrapper {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0;
+  }
+
+  h3 {
+    font-family: "Futura", sans-serif;
+    font-weight: 500;
+    font-size: 1.25rem;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+  }
+
+  a {
+    color: var(--black);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+    color: var(--accent);
+  }
+
+  @media (min-width: 768px) {
+    .galleri_img {
+      width: 22.45638rem;
+      height: 28.125rem;
+    }
+
+    .scroll_button img {
+      width: 2rem;
+      height: 2rem;
+      align-self: flex-start;
+    }
+
+    h3 {
+      font-size: 1.5rem;
+    }
+  }
+</style>

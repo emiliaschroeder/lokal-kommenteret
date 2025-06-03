@@ -1,0 +1,154 @@
+<footer>
+  <div class="footer">
+    <div class="sociale">
+      <p>sociale</p>
+      <p>
+        <a
+          href="https://www.instagram.com/lokalcph/"
+          target="_blank"
+          rel="noopener noreferrer">instagram - @lokalcph</a
+        >
+      </p>
+      <p>
+        <a
+          href="https://www.facebook.com/lokalcph/"
+          target="_blank"
+          rel="noopener noreferrer">facebook - Lokalcph</a
+        >
+      </p>
+    </div>
+    <div class="aabningstider">
+      <p>åbningstider</p>
+      <p>mandag til fredag 8 - 16</p>
+      <p>lørdag 8 - 17</p>
+    </div>
+    <div class="grid">
+      <a href="/#top"><h1>lokal</h1></a>
+      <div class="kontakt">
+        <p>email:</p>
+        <p>anders@handcraftedcph.com</p>
+        <p>tlf:</p>
+        <p>51 91 13 53</p>
+        <p>adresse:</p>
+        <p>sønder boulevard 59</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  /* Styling af footer baggrundsbillede */
+
+  .footer {
+    background-image: url("/src/assets/footer-bg-mobile.webp");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 100vh; /* Fuld højde for mobil */
+    width: 100%;
+    margin-top: 7vh;
+    display: flex; /* Use flexbox for vertical alignment */
+    flex-direction: column;
+    justify-content: space-between; /* Ensure content is spaced properly */
+    overflow: hidden; /* Prevent content overflow */
+  }
+
+  /* Grid til lokal og kontakt */
+  .grid {
+    display: grid;
+    grid-template-columns: 3fr 1fr; /* 3/1 fordeling mellem h1 og kontakt */
+    align-items: end; /* Align items at the bottom of the grid */
+    height: 100%; /* Make the grid fill the footer */
+    padding: 0; /* Remove unnecessary padding */
+  }
+
+  /* Styling tekst */
+  h1 {
+    font-family: "Futura", sans-serif;
+    color: var(--bg);
+    font-size: clamp(1.9rem, 22vw, 28rem); /* responsivt */
+    font-weight: 700;
+    grid-column: 1;
+    line-height: 1;
+    align-self: stretch; /* det skal placeres i bunden af rækken */
+    margin: 0;
+    margin-bottom: -0.6rem;
+    display: flex;
+    justify-content: center; /* Center text horizontally */
+    align-items: flex-end; /* Align text at the bottom */
+    text-decoration: none; /* Remove underline */
+  }
+  .sociale {
+    font-family: "Futura", sans-serif;
+    font-weight: 500;
+    font-size: clamp(0.8rem, 2vw, 1.1rem); /* responsivt */
+    text-align: right;
+    padding-right: 0.8rem; /* Tilføjer lidt afstand til højre */
+    padding-top: 6.8rem;
+  }
+
+  .aabningstider {
+    font-family: "Futura", sans-serif;
+    font-weight: 500;
+    font-size: clamp(0.8rem, 2vw, 1.1rem); /* responsivt */
+    text-align: right;
+    padding-right: 0.8rem; /* Tilføjer lidt afstand til højre */
+    padding-top: 12vh;
+  }
+
+  .kontakt {
+    font-family: "Futura", sans-serif;
+    font-weight: 500;
+    font-size: clamp(0.7rem, 2vw, 1.1rem); /* responsivt */
+    grid-column: 2;
+    margin-right: 0.8rem;
+    align-self: end; /* Align at the bottom of the grid */
+  }
+
+  .footer a,
+  p {
+    color: var(--bg);
+    text-decoration: none;
+  }
+
+  .sociale a:hover {
+    text-decoration: underline;
+  }
+
+  img {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+
+  @media screen and (min-width: 650px) {
+    .kontakt {
+      margin-right: 20rem;
+    }
+    .footer {
+      background-image: url("/src/assets/footer-bg-desktop.webp");
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 102vh; /* Fuld højde for desktop */
+      width: 100%;
+      margin-top: 7vh; /* Ingen margin-top for desktop */
+    }
+
+    h1 {
+      margin-bottom: -2rem;
+    }
+    .grid {
+      height: 100%; /* Ensure grid fills the footer */
+      align-items: end; /* Align items at the bottom */
+    }
+
+    .sociale {
+      padding-top: 0.8rem;
+    }
+
+    .aabningstider {
+      padding-top: 6vh;
+    }
+  }
+</style>

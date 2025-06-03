@@ -1,0 +1,237 @@
+<header>
+  <!-- Mobil burger -->
+  <div class="burger">
+    <div class="line"></div>
+    <div class="line short"></div>
+    <div class="line"></div>
+  </div>
+
+  <!-- Desktop titel/logo + menu -->
+
+  <div class="desktop-header">
+    <a href="/" class="desktop-title" id="headerLogo">
+      <span class="title-text">lokal</span>
+      <img src="/src/assets/logo.svg" alt="lokal logo" class="logo-hover" />
+    </a>
+    <nav class="desktop-menu">
+      <a href="/#se_menu">se menu</a>
+      <a href="/galleri">galleri</a>
+      <a href="/kontakt">kontakt</a>
+    </nav>
+  </div>
+
+  <!-- Mobil overlay-menu -->
+  <div class="mobile-menu">
+    <div class="line_divider"></div>
+    <a class="menu_tekst" href="/">forside</a>
+    <div class="line_divider_menu"></div>
+    <a href="/#se_menu">se menu</a>
+    <div class="line_divider"></div>
+    <a href="/galleri">galleri</a>
+    <div class="line_divider"></div>
+    <a href="/kontakt">kontakt</a>
+    <div class="line_divider"></div>
+  </div>
+  <script src="/javascript/burger.js" defer></script>
+</header>
+
+<!-- Style menuen -->
+<style>
+  header {
+    font-family: "Futura", sans-serif;
+    margin: 0;
+    padding: 0.5rem;
+    position: fixed;
+    z-index: 200;
+  }
+
+  /* Burger */
+  .burger {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-top: 5px;
+    width: 50px;
+    align-items: left;
+    cursor: pointer;
+    z-index: 150; /* Højt z-index for at sikre den er over andre elementer */
+  }
+
+  /* style burger stregerne når den bliver aktiv */
+  .burger.active .line:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px); /* strejerne roterer når aktiv */
+    transition: 0.2s linear;
+    background-color: var(--bg);
+    z-index: 105; /* Højt z-index for at sikre den er over andre elementer */
+  }
+
+  .burger.active .line:nth-child(2) {
+    opacity: 0;
+    transition: 0.15s linear;
+  }
+
+  .burger.active .line:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -10px);
+    transition: 0.2s linear;
+    z-index: 105; /* Højt z-index for at sikre den er over andre elementer */
+  }
+
+  /* burger linjer i ikke aktiv */
+  .burger .line {
+    height: 1.5px;
+    background-color: var(--black);
+    width: 100%;
+    z-index: 150; /* Højt z-index for at sikre den er over andre elementer */
+    transition: background-color 0.2s ease-in-out;
+  }
+
+  /* Aktiv – styr både rotation og farveskift her */
+  .burger.active .line:nth-child(1),
+  .burger.active .line:nth-child(3) {
+    background-color: var(--bg) !important;
+  }
+
+  .burger .short {
+    width: 60%;
+    align-self: right;
+  }
+
+  /* Mobilmenu */
+  /* Mobile-menu som fullscreen overlay, start udenfor viewport */
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--accent); /* Rød baggrund som ønsket */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+
+    /* Start "skjult" med transform og opacity */
+    transform: translateY(-100%);
+    opacity: 0;
+
+    /* Transitions */
+    transition:
+      transform 0.9s ease-in-out,
+      opacity 0.8s ease-in-out;
+    z-index: 100; /* højt z-index så det ligger over alt */
+  }
+
+  /* Når menuen er aktiv glider den ned og bliver synlig */
+  .mobile-menu.active {
+    transform: translateY(0);
+    opacity: 1;
+    display: flex; /* Sikrer den er flex når aktiv */
+  }
+
+  .mobile-menu .line_divider,
+  .mobile-menu .line_divider_menu {
+    height: 1px;
+    background-color: var(--bg);
+    width: 100%;
+  }
+
+  .mobile-menu .line_divider_menu {
+    margin-top: -1.5rem;
+  }
+
+  /* Tekstfarve i menuen */
+  .mobile-menu a {
+    font-size: 1.5rem;
+    color: var(--bg); /* Hvid tekst på rød baggrund */
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .mobile-menu a.menu_tekst {
+    font-size: 6.6rem;
+    font-weight: 700;
+    color: var(--bg);
+    text-decoration: none;
+    margin-top: -0.5rem;
+    cursor: pointer;
+  }
+  .mobile-menu a:hover {
+    color: var(--bg);
+    scale: 1.2;
+  }
+
+  .mobile-menu a.menu_tekst:hover {
+    scale: 1.08;
+  }
+
+  /* gør mobile menu aktiv */
+  .mobile-menu.active {
+    display: flex;
+  }
+
+  /* Desktop skjult by default */
+  .desktop-header {
+    display: none;
+  }
+
+  /* Desktop layout */
+  @media screen and (min-width: 850px) {
+    .burger,
+    .mobile-menu {
+      display: none;
+    }
+
+    .desktop-header {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
+      padding-left: 0.5rem;
+    }
+
+    .desktop-title {
+      font-size: 2.5rem;
+      color: var(--black);
+      position: relative;
+      cursor: pointer;
+      height: 3.2rem;
+      text-decoration: none;
+    }
+
+    .title-text {
+      display: block;
+    }
+
+    .logo-hover {
+      display: none;
+      top: 0;
+      left: 0;
+      max-width: 120px;
+    }
+
+    .desktop-title:hover .title-text {
+      display: none;
+    }
+
+    .desktop-title:hover .logo-hover {
+      display: block;
+    }
+
+    .desktop-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .desktop-menu a {
+      font-size: 1rem;
+      color: var(--black);
+      text-decoration: none;
+    }
+
+    .desktop-menu a:hover {
+      color: var(--accent);
+    }
+  }
+</style>
