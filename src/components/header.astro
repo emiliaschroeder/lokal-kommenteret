@@ -7,14 +7,16 @@
   </div>
 
   <!-- Desktop titel/logo + menu -->
-
+<!-- span delen gør at når der er hover over "lokal" vises logoet istedet, se i css'en hvor det sker -->
   <div class="desktop-header">
     <a href="/" class="desktop-title" id="headerLogo">
       <span class="title-text">lokal</span>
       <img src="/src/assets/logo.svg" alt="lokal logo" class="logo-hover" />
     </a>
+    <!-- Desktop menu -->
+     <!-- se menu har et id-tag (#) som scroller ned til menuen på index siden og automatisk leder hen på menuen når man trykker på "se menu" fra de andre undersider -->
     <nav class="desktop-menu">
-      <a href="/#se_menu">se menu</a>
+      <a href="/#se_menu">se menu</a> 
       <a href="/galleri">galleri</a>
       <a href="/kontakt">kontakt</a>
     </nav>
@@ -39,15 +41,15 @@
 <style>
   header {
     font-family: "Futura", sans-serif;
-    margin: 0;
-    padding: 0.5rem;
-    position: fixed;
-    z-index: 200;
+    margin: 0; 
+    padding: 0.5rem; 
+    position: fixed; /* Gør headeren fast i toppen */
+    z-index: 200; /* Højt z-index for at sikre headeren er over andre elementer */
   }
 
   /* Burger */
   .burger {
-    display: flex;
+    display: flex; /
     flex-direction: column;
     gap: 8px;
     padding-top: 5px;
@@ -209,7 +211,10 @@
       left: 0;
       max-width: 120px;
     }
-
+/* Når musen er over .desktop-title:
+      - skjules .title-text (display: none)
+      - .logo-hover bliver synlig (display: block) */
+      
     .desktop-title:hover .title-text {
       display: none;
     }
