@@ -1,5 +1,6 @@
 ---
 const images = [
+  // Instagram billeder
   "/src/assets/instagram_01.webp",
   "/src/assets/instagram_02.webp",
   "/src/assets/instagram_03.webp",
@@ -11,14 +12,17 @@ const images = [
   "/src/assets/instagram_09.webp",
   "/src/assets/instagram_10.webp",
 ];
-
+// pil-ikon til scroll-knap
 const arrowRight = "/src/assets/arrow_right.svg";
+// Henter tekst fra props (Astro)
 const { text } = Astro.props;
 ---
 
 <section class="scroll_galleri">
+  <!-- Overskrift med tekst (fra props) + link til Instagram-profil */ -->
   <h3>{text} <a href="https://www.instagram.com/lokalcph/">@lokalcph</a></h3>
 
+  <!-- Scrollbar-container der indeholder alle billederne + gennemløber arrayet så de vises i rækkefølge -->
   <div class="scroll_container" id="scroll_container">
     {
       images.map((img, i) => (
@@ -34,20 +38,28 @@ const { text } = Astro.props;
   </div>
 </section>
 
-<!-- Wrapper for at placere knap til højre med flex -->
+<!-- Wrapper for at placere scroll-knap til højre med flex -->
 <div class="scroll_button_wrapper">
-  <button class="scroll_button" id="scroll_btn">
+  <!-- Knappen har et unikt id "scroll_btn" som bruges i JavaScript til at tilføje scroll-effekten -->
+  <button class="scroll_button"  id="scroll_btn">
+    <!-- Pil-ikon der bruges som billede i knappen -->
     <img src="/src/assets/arrow_right.svg" alt="Scroll videre" />
   </button>
 </div>
 
 <!-- JavaScript til scroll-effekt -->
 <script>
+  // Henter knappen via unikt id: "scroll_btn"
   const button = document.getElementById("scroll_btn");
+  // Henter containeren der indeholder billederne via id: "scroll_container"
+  // Dette gør at knappen kan scroll'e containeren til højre når den klikkes
   const container = document.getElementById("scroll_container");
 
+  // Tilføjer en event listener til knappen der lytter efter klik
   if (button && container) {
+    // Når knappen klikkes, scrolles containeren til højre med en glidende effekt
     button.addEventListener("click", () => {
+      // Scroller containeren til højre med 80% af dens bredde
       container.scrollBy({
         left: container.offsetWidth * 0.8,
         behavior: "smooth",
@@ -57,28 +69,28 @@ const { text } = Astro.props;
 </script>
 
 <style>
-  .scroll_galleri {
-    padding: 1rem;
-    text-align: center;
-  }
 
-  .scroll_container {
-    display: flex;
-    overflow-x: auto;
+  .scroll_galleri {
+    padding: 1rem; 
+    text-align: center; 
+  }
+  .scroll_container { 
+    display: flex; /* Gør at billederne vises i en række */
+    overflow-x: auto; /* Gør at containeren kan scrolles horisontalt */
     scroll-behavior: smooth;
-    gap: 0.5rem;
-    padding-block: 1rem;
+    gap: 0.5rem; 
+    padding-block: 1rem; /* Vertikal padding for at give lidt luft over og under billederne */
   }
 
   .galleri_img {
-    flex: 0 0 auto;
-    width: 14rem;
-    height: auto;
-    object-fit: cover;
+    flex: 0 0 auto; /* Gør at billederne ikke strækker sig*/
+    width: 14rem; /* Bredde på billederne */
+    height: auto; 
+    object-fit: cover; 
   }
 
   .scroll_button {
-    background: none;
+    background: none; 
     border: none;
     cursor: pointer;
   }
@@ -86,7 +98,7 @@ const { text } = Astro.props;
   .scroll_button img {
     width: 1.5rem;
     height: 1.5rem;
-    align-self: flex-start;
+    align-self: flex-start; /* Justerer billedet i knappen til at starte fra toppen */
   }
   .scroll_button:hover {
     transform: scale(1.1);
@@ -96,7 +108,7 @@ const { text } = Astro.props;
   /* Scroll-knap placeret til højre */
   .scroll_button_wrapper {
     display: flex;
-    justify-content: flex-end;
+    justify-content: flex-end; 
     padding: 0;
   }
 
@@ -121,7 +133,7 @@ const { text } = Astro.props;
 
   @media (min-width: 768px) {
     .galleri_img {
-      width: 22.45638rem;
+      width: 22.45638rem; /
       height: 28.125rem;
     }
 
