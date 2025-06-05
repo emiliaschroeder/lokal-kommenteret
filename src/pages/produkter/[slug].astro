@@ -1,17 +1,19 @@
 ---
+// Import af fælles komponenter og layout
 import Header from "../../components/header.astro";
 import Footer from "../../components/footer.astro";
 import Layout from "../../layouts/Layout.astro";
 
 //@ts-ignore
 // Denne funktion henter data fra en ekstern API og genererer statiske sider for hvert produkt
-// Denne funktion skal eksporteres for at Astro kan bruge den til at generere statiske sider
 // getStaticPaths bruges til at generere statiske sider baseret på data fra en API
 // Den henter alle produkter fra en Supabase database og returnerer en liste af stier
 // til hvert produkt baseret på deres slug
 
+// Modtager det enkelte produkt som prop
 const { produkt }: { produkt: Produkt } = Astro.props;
 
+// Type-definition for et produkt (giver overblik over hvilke data hvert produkt har)
 type Produkt = {
   product_slug: string;
   product_name: string;
@@ -20,53 +22,65 @@ type Produkt = {
   price: number;
 };
 
+// Denne funktion bliver kørt under bygning af siden og bruges til at generere en underside for hvert produkt
 export async function getStaticPaths() {
   const url =
-    //   endpoint
+    // Supabase API endpoint til at hente alle produkter
     "https://bthhfklfetpicuolnkyp.supabase.co/rest/v1/produkter?select=*";
 
-  // nøgle, der gør at jeg kan hente tabellen
+  // API nøgle til at få adgang til data fra Supabase
   const key =
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aGhma2xmZXRwaWN1b2xua3lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTA5MDMsImV4cCI6MjA2MzIyNjkwM30.oCFLXDzG2ItPy4MqhDi5d5nG3EixOPRD-pLPqPKubC4";
 
+  // Tilføjer API-nøglen som header til fetch-kaldet
   const option = {
     headers: {
       apikey: key,
     },
   };
 
+  // Henter data fra API'et og konverterer svaret til JSON
   const data = await fetch(url, option).then((res) => res.json());
 
-  console.log(data);
+  console.log(data); // Debug: viser produkterne i konsollen
 
+  // Returnerer en rute (slug) og de tilhørende props (produktdata) for hver underside
   return data.map((produkt: Produkt) => {
     return {
-      params: { slug: produkt.product_slug },
-      props: { produkt },
+      params: { slug: produkt.product_slug }, // URL'en bruger produktets slug.
+      props: { produkt }, // Props der bliver sendt videre til komponenten
     };
   });
 }
 ---
 
+<!-- Side-layout med titel baseret på produktnavnet -->
 <Layout title={produkt.product_name}>
   <Header />
   <main>
     <div class="product_wrapper">
+      <!-- Produktbillede -->
       <section class="hero">
         <img
           class="product_img"
           src={`/galleri_imgs/${produkt.image}`}
           alt={produkt.description}
         />
+        <!-- Billede hentes ud fra produktets image-property -->
       </section>
+      <!-- Info om produktet -->
       <section class="product_info">
         <div class="info_text">
           <h2 class="product_name">{produkt.product_name}</h2>
           <div class="line"></div>
           <p>{produkt.description}</p>
+          <!-- Produktbeskrivelse -->
           <p>{produkt.price},-</p>
+          <!-- Pris -->
           <div class="line"></div>
           <p>find den på sønder boulevard 59</p>
+          <!-- Fast info om lokation -->
+          <!-- Tilbage-knap med pil -->
           <a class="back_cta" href="/galleri">
             <img
               src="/src/assets/arrow_right.svg"
