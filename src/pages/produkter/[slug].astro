@@ -10,10 +10,10 @@ import Layout from "../../layouts/Layout.astro";
 // Den henter alle produkter fra en Supabase database og returnerer en liste af stier
 // til hvert produkt baseret på deres slug
 
-// Modtager det enkelte produkt som prop
+// Her modtager vi det enkelte produkt som en prop, som vi har defineret længere nede
 const { produkt }: { produkt: Produkt } = Astro.props;
 
-// Type-definition for et produkt (giver overblik over hvilke data hvert produkt har)
+// En type-definition for et produkt – den beskriver præcis, hvilke data hvert produkt indeholder
 type Produkt = {
   product_slug: string;
   product_name: string;
@@ -22,7 +22,10 @@ type Produkt = {
   price: number;
 };
 
-// Denne funktion bliver kørt under bygning af siden og bruges til at generere en underside for hvert produkt
+// getStaticPaths er en funktion, der bruges i Astro til at generere statiske sider
+// Den henter data fra en ekstern API (i dette tilfælde Supabase) for at generere en liste af stier
+
+// Denne funktion bliver kørt under bygning af siden og bruges til at laver automatisk én side pr. produkt
 export async function getStaticPaths() {
   const url =
     // Supabase API endpoint til at hente alle produkter
@@ -33,22 +36,28 @@ export async function getStaticPaths() {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aGhma2xmZXRwaWN1b2xua3lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTA5MDMsImV4cCI6MjA2MzIyNjkwM30.oCFLXDzG2ItPy4MqhDi5d5nG3EixOPRD-pLPqPKubC4";
 
   // Tilføjer API-nøglen som header til fetch-kaldet
+  // Når vi sender vores forespørgsel til Supabase, så sender vi også en nøgle med, så vi kan få adgang til databasen.
   const option = {
     headers: {
       apikey: key,
     },
   };
 
-  // Henter data fra API'et og konverterer svaret til JSON
+  // FETCH DATA FRA SUPABASE - Henter data fra API'et og konverterer svaret til JSON
+  // 'data' bliver et array af produkter, som vi kan bruge i vores komponent
+  //fetch(url, option) = henter data fra URL og sender "headers" (nøglen) med
+  // .then((res) => res.json()) = når vi får et svar fra serveren, så konverterer vi det til JSON-format (læsbart format for JavaScript)
+  // await = venter på at fetch-kaldet er færdigt, før koden fortsætter
   const data = await fetch(url, option).then((res) => res.json());
 
   console.log(data); // Debug: viser produkterne i konsollen
 
-  // Returnerer en rute (slug) og de tilhørende props (produktdata) for hver underside
+  // Returnerer en rute (slug) for hver produkt-side og sender også produktets data med videre som prop
   return data.map((produkt: Produkt) => {
     return {
-      params: { slug: produkt.product_slug }, // URL'en bruger produktets slug.
-      props: { produkt }, // Props der bliver sendt videre til komponenten
+      params: { slug: produkt.product_slug }, // URL'en bruger produktets slug, som bliver hentet fra databasen
+      // params er det, der bruges til at generere stien for hver produkt-side
+      props: { produkt }, // Her sender vi selve produktets data videre til siden (props)
     };
   });
 }

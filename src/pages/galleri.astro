@@ -2,19 +2,30 @@
 import Header from "../components/header.astro";
 import Footer from "../components/footer.astro";
 import Layout from "../layouts/Layout.astro";
+// Importerer komponenten 'ImgTekstGalleri', som bruges til at vise billeder i galleriet
 import ImgTekstGalleri from "../components/ImgTekstGalleri.astro";
 
+// Supabase API endpoint til at hente alle produkter
 const url =
   "https://bthhfklfetpicuolnkyp.supabase.co/rest/v1/produkter?select=*";
+
+// API nøgle til at få adgang til data fra Supabase
 const key =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ0aGhma2xmZXRwaWN1b2xua3lwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDc2NTA5MDMsImV4cCI6MjA2MzIyNjkwM30.oCFLXDzG2ItPy4MqhDi5d5nG3EixOPRD-pLPqPKubC4";
 
+// Når vi sender vores forespørgsel til Supabase, så sender vi også en nøgle med, så vi kan få adgang til databasen.
+// Tilføjer API-nøglen som header til fetch-kaldet.
 const option = {
   headers: {
-    apikey: key,
+    apikey: key, // Send denne nøgle med, når vi henter data fra Supabase
   },
 };
 
+// FETCH DATA FRA SUPABASE
+// 'data' bliver et array af produkter, som vi kan bruge i vores komponent
+//fetch(url, option) = henter data fra URL og sender "headers" (nøglen) med
+// .then((res) => res.json()) = når vi får et svar fra serveren, så konverterer vi det til JSON-format (læsbart format for JavaScript)
+// await = venter på at fetch-kaldet er færdigt, før koden fortsætter
 const data = await fetch(url, option).then((res) => {
   return res.json();
 });
@@ -46,6 +57,10 @@ console.log(data);
         kan kun købes i butikken – kig forbi og oplev det hele selv.
       </div>
 
+      <!-- slug er linket til det enkelte produkt, som vi henter fra Supabase -->
+      <!-- Bruger komponenten ImgTekstGalleri og giver den et billede + tekst + pris -->
+      <!-- Sender data ind via props (src, alt, title, price osv.) – her fra produktet i data[0] -->
+      <!-- data[0] er det første produkt i arrayet 'data', som vi henter fra Supabase -->
       <div class="felt2">
         <a href={`/produkter/${data[0].product_slug}`}>
           <ImgTekstGalleri
@@ -59,7 +74,10 @@ console.log(data);
         </a>
       </div>
       <div class="felt3">
-        <!-- Bruger komponenten ImgTekstGalleri og giver den et billede + tekst -->
+        <!-- slug er linket til det enkelte produkt -->
+        <!-- Bruger komponenten ImgTekstGalleri og giver den et billede + tekst + pris -->
+        <!-- Sender data ind via props (src, alt, title, price osv.) – her fra produktet i data[1] -->
+        <!-- data[1] er det første produkt i arrayet 'data', som vi henter fra Supabase -->
         <a href={`/produkter/${data[1].product_slug}`}>
           <ImgTekstGalleri
             src={`/galleri_imgs/${data[1].image}`}
@@ -118,6 +136,7 @@ console.log(data);
       </div>
 
       <!-- Grid med 2 kolonner: 1 del og 2 dele -->
+      <!-- grid inde i et grid, som gør at feltet kan styles forskelligt  -->
       <div class="img_grid2">
         <div class="felt5">
           <!-- Bruger komponenten ImgTekstGalleri og giver den et billede + tekst -->
