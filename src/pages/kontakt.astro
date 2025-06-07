@@ -8,11 +8,12 @@ import Scroll_galleri from "../components/scroll.astro";
 <Layout>
   <Header />
   <main>
+    <!-- Hero-sektion med baggrundsbillede og tekst -->
     <section class="kontakt_hero bg_lamps">
       <span class="kontakt_tekst">kontakt</span>
       <span class="os_tekst">os</span>
     </section>
-
+    <!-- To-kolonners grid: venstre tekst, højre billede -->
     <section class="grid_1-1">
       <div class="event_tekst">
         <h2>hold dit event hos os</h2>
@@ -33,6 +34,7 @@ import Scroll_galleri from "../components/scroll.astro";
       </div>
     </section>
 
+    <!-- Formular-sektion med tekst i venstre kolonne og formular i højre -->
     <section class="form_grid">
       <div class="text_col">
         <h2>lidt praktisk</h2>
@@ -52,8 +54,19 @@ import Scroll_galleri from "../components/scroll.astro";
 
       <div class="form_col">
         <form class="kontakt-formular">
+          <!-- kontaktformular med inputfelter og en send-knap -->
+          <!-- 'required' betyder, at feltet skal udfyldes før man kan sende -->
           <input type="text" placeholder="[dit navn]" required />
+          <!-- Tekstfelt til navn -->
           <input type="email" placeholder="[din e-mail]" required />
+          <!-- E-mailfelt med automatisk tjek på e-mail-format -->
+
+          <!-- Telefonnummer-felt som kun accepterer præcis 8 cifre -->
+          <!-- type= tel: Viser nummer-tastatur på mobil -->
+          <!-- name="telefon": Navn på feltet (bruges ved indsendelse) -->
+          <!-- pattern="\d{8}": Kun 8 tal tilladt (ingen mellemrum eller bogstaver) -->
+          <!-- max + min length: Bruger må max/min skrive 8 tegn -->
+          <!-- 'title' giver en hjælpetekst hvis validering fejler -->
           <input
             type="tel"
             name="telefon"
@@ -64,17 +77,21 @@ import Scroll_galleri from "../components/scroll.astro";
             required
             title="Indtast præcis 8 cifre (kun tal)"
           />
+
           <textarea placeholder="[din besked]" required></textarea>
           <button type="submit">send</button>
+          <!-- 'type="submit"' gør knappen til formularens afsender -->
         </form>
       </div>
     </section>
+    <!-- Scroll-galleri komponent med prop tekst-->
     <Scroll_galleri text="tjek vores lokale ud her" />
   </main>
   <Footer />
 </Layout>
 
 <style>
+  /* Hero-sektion med baggrundsbillede og "kontakt os"-tekst */
   .kontakt_hero {
     display: flex;
     /* så 'os' følger 'kontakt' nederst */
@@ -85,6 +102,7 @@ import Scroll_galleri from "../components/scroll.astro";
     padding-left: 1rem;
   }
 
+  /* Baggrundsbillede af lamper */
   .bg_lamps {
     background-image: url("/src/assets/kontakt_lamper.webp");
     background-position: top -8px right 1px;
@@ -92,6 +110,7 @@ import Scroll_galleri from "../components/scroll.astro";
     background-size: 70%;
   }
 
+  /* Stor "kontakt"-tekst */
   .kontakt_tekst {
     font-family: "Futura", sans-serif;
     color: var(--accent);
@@ -102,6 +121,7 @@ import Scroll_galleri from "../components/scroll.astro";
     padding-top: 3.5rem;
   }
 
+  /* Lodret roteret "os"-tekst */
   .os_tekst {
     font-family: "Gabriela", serif;
     font-size: clamp(2rem, 8vw, 15rem);
@@ -141,7 +161,7 @@ import Scroll_galleri from "../components/scroll.astro";
 
   .image_container {
     display: flex;
-    justify-content: flex-end; /* pushes image to the right */
+    justify-content: flex-end; /* justerer billedet til højre */
     padding-top: 3rem;
     padding-bottom: 3rem;
     margin-left: 2rem;
@@ -153,7 +173,6 @@ import Scroll_galleri from "../components/scroll.astro";
   }
 
   /* KONTAKT FORMULAR */
-
   .text_col {
     padding-left: 1rem; /* giver teksten luft */
     padding-right: 2rem;
@@ -175,7 +194,7 @@ import Scroll_galleri from "../components/scroll.astro";
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    position: relative;
+    position: relative; /* gør det muligt at placere knappen korrekt */
   }
 
   .kontakt-formular input,
@@ -194,7 +213,7 @@ import Scroll_galleri from "../components/scroll.astro";
   .kontakt-formular button {
     font-family: "Futura", sans-serif;
     font-weight: 500;
-    position: absolute;
+    position: absolute; /* Knappen placeres absolut i forhold til dens nærmeste relative forælder (form'en) */
     right: 0;
     bottom: -2.5rem;
     background: none;
@@ -248,7 +267,7 @@ import Scroll_galleri from "../components/scroll.astro";
     }
 
     .form_col {
-      order: -1;
+      order: -1; /* gør at formularen vises til venstre for teksten */
     }
 
     .image_container {
