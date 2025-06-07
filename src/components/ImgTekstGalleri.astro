@@ -1,19 +1,19 @@
 ---
-// Henter de tre egenskaber (props) der sendes ind til komponenten
-// 'src' = stien til billedet
-// 'alt' = alternativ tekst til billedet (for skærmlæsere og SEO)
-// 'title' = teksten der vises ovenpå billedet
+// Henter de fem props (egenskaber) der sendes ind til komponenten:
+// Disse data bliver brugt til at vise billede, titel, pris og styling
+// 'class' (her omdøbt til 'className', fordi 'class' er et reserveret ord i JavaScript) = CSS-klasse der fjerner pris på enkelte billeder
 const { src, alt, title, price, class: className } = Astro.props;
 ---
 
-<!-- HOVEDCONTAINEREN --><!-- Position: relative gør det muligt at placere teksten (image-title) absolut i forhold til denne wrapper. --><!-- <div class="image-wrapper">
-  <span class="image-title">{title}</span>
-  <img src={src} alt={alt} class={className} />
-</div> -->
+<!-- HOVEDCONTAINEREN -->
 <div class="image-wrapper">
   <span class="image-title">
+    <!-- Titel og pris vises som tekst ovenpå billedet -->
     {title}
     {
+      // Hvis price eksisterer (altså ikke er undefined), så vises prisen med en lodret streg imellem
+      // !== betyder "ikke lig med", så vi tjekker om price ikke er undefined
+      // && betyder at hvis price er defineret, så vises prisen
       price !== undefined && (
         <>
           <span class="vertical-bar">|</span>
@@ -22,6 +22,8 @@ const { src, alt, title, price, class: className } = Astro.props;
       )
     }
   </span>
+
+  <!-- Billede url'en hentes dynamisk fra javascript, men selve billedet ligger lokalt -->
   <img src={src} alt={alt} class={className} />
 </div>
 
