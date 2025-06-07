@@ -8,7 +8,10 @@ import Layout from "../layouts/Layout.astro";
 <Layout>
   <Header />
   <main>
+    <!-- Hero sektion med animeret logo-video + tekst-overlay -->
     <section class="hero" id="top">
+        <!-- Video logo - autoplay (spiller automatisk), muted (uden lyd), spiller inline (direkte på siden) -->
+  <!-- On ended pauses video og går til sidste frame -->
       <video
         class="hero_logo"
         id="heroLogo"
@@ -18,7 +21,8 @@ import Layout from "../layouts/Layout.astro";
         onended="this.pause(); this.currentTime = this.duration - 0.01;"
       >
         <source src="../src/assets/logo.mp4" type="video/mp4" />
-      </video>
+      </video> 
+      <!-- Tekst-overlay ovenpå video -->
       <div class="hero_text_wrapper" id="scrollHero">
         <div class="hero_text">
           <h1 class="lokal">lokal</h1>
@@ -194,42 +198,71 @@ import Layout from "../layouts/Layout.astro";
     </section>
 
     <Scroll_galleri text="følg os" />
+
+    
     <script>
+// Script til at animere scrollHero logoet fra hero til header
+
+        // Venter til hele DOM'en er loaded, så vi er sikre på at elementerne findes
       window.addEventListener("DOMContentLoaded", () => {
+
+        // Finder elementet med teksten "lokal / cph" i hero-sektionen
         const scrollHero = document.getElementById("scrollHero")!;
+
+        // Finder logoet i headeren 
         const headerLogo = document.getElementById("headerLogo")!;
+
+        // Hvis hero-logoet ikke findes, finder vi det i hero-sektionen
         const heroLogo = document.getElementById("heroLogo");
 
+        // Hvis vi ikke kan finde scrollHero eller headerLogo, afbryd scriptet
         if (!scrollHero || !headerLogo) return;
 
+        // Definerer hvor langt man kan scrolle før animationen stopper (max 400px scroll)
         const maxScroll = 400;
-
+        
+        // Funktion som opdaterer position, skalering og opacitet baseret på hvor langt vi har scrollet
         function update() {
+
+        // Fanger nuværende scroll-position, men max 400px
           const scroll = Math.min(window.scrollY, maxScroll);
+              
+         // Beregner hvor langt i procent vi er nået (0 = top, 1 = 400px scrollet)
           const progress = scroll / maxScroll;
 
+         // Finder hvor scrollHero og headerLogo befinder sig på skærmen lige nu
           const startRect = scrollHero.getBoundingClientRect();
           const endRect = headerLogo.getBoundingClientRect();
 
+          // Beregner forskellen i X og Y position (afstand mellem start og slut)
           const deltaX = endRect.left - startRect.left;
           const deltaY = endRect.top - startRect.top;
+
+          // Beregner hvor meget vi skal skalere teksten ned
           const scale = endRect.width / startRect.width;
 
+          // Anvender transform CSS: flytter teksten mod headeren og skalerer den ned
           scrollHero.style.transform = `
         translate(${deltaX * progress}px, ${deltaY * progress}px)
         scale(${1 + (scale - 1) * progress})
       `;
 
-          // Fade scrollHero ud – men headerLogo er altid synlig
+          // Fade scrollHero ud mens man scroller
           // Fade in/out afhængig af scroll
           scrollHero.style.opacity = `${1 - progress}`;
+
+          // Hvis video-logoet findes, fade det også ud samtidig
           if (heroLogo) {
             heroLogo.style.opacity = `${1 - progress}`;
           }
         }
-
+         // Tilføjer event listener: kør update() hver gang brugeren scroller
         window.addEventListener("scroll", update);
+
+          // Tilføjer event listener: kør update() hvis vinduets størrelse ændres (så det tilpasses dynamisk)
         window.addEventListener("resize", update);
+
+          // Kør update() én gang fra start (så animation starter korrekt når siden loader)
         update(); // initial
       });
     </script>
@@ -258,19 +291,20 @@ import Layout from "../layouts/Layout.astro";
         display: block;
         margin-left: auto;
         margin-right: auto;
-        transition: 0.3s ease;
+        transition: 0.3s ease; /* ikke nødtvendigt?*/ 
       }
 
+      
       .hero_logo {
-        transition:
+        transition: 
           transform 0.1s ease,
-          opacity 0.1s ease;
-        transform-origin: center center;
+          opacity 0.1s ease; 
+        transform-origin: center center; /* sikrer at logoet skaleres fra midten */
       }
       .hero_text {
-        grid-area: 1 / 1;
+        grid-area: 1 / 1; /* sikrer at teksten er ovenpå videoen */
         display: flex;
-        flex-direction: row;
+        flex-direction: row; 
         align-items: flex-end;
         justify-content: center;
         gap: 0.25rem;
@@ -284,7 +318,7 @@ import Layout from "../layouts/Layout.astro";
         font-size: clamp(7.8rem, 12vw, 12rem);
         font-weight: 700;
         line-height: 1;
-        transition: font-size 0.3s ease;
+        transition: font-size 0.3s ease; /* Smidig overgang hvis fontstørrelsen ændres (ved scroll) */
         text-align: left;
         align-self: flex-end;
         margin: 0;
@@ -294,10 +328,10 @@ import Layout from "../layouts/Layout.astro";
         font-family: "Gabriela", serif;
         font-size: clamp(2rem, 2vw, 1.875rem);
         color: var(--accent);
-        writing-mode: vertical-rl;
-        transform: rotate(180deg);
+        writing-mode: vertical-rl; /* Skriver teksten vertikalt */
+        transform: rotate(180deg); /* Roterer teksten 180 grader */
         margin-bottom: 1.5rem;
-        transition: font-size 0.3s ease;
+        transition: font-size 0.3s ease; 
       }
 
       /* INFO */
