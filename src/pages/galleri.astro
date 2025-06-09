@@ -90,11 +90,14 @@ console.log(data);
       </div>
 
       <!-- SROLLBAR -->
-
+      <!-- Scrollbar-sektion: viser flere kopier af samme produkt i en horisontal scroll-container -->
       <div class="felt4">
         <span class="scroll-title">Scroll</span>
         <div class="scroll_produkt">
+          <!-- Link til produktets side med dynamisk slug, som hentes fra data arrayet(produkterne fra database) -->
+          <!-- data[2] (tredje produkt i arrayet) ændre sig ikke fordi det er samme produkt der hentes -->
           <a href={`/produkter/${data[2].product_slug}`}>
+            <!-- Produktbillede med dynamisk kilde og alt-tekst -->
             <img
               src={`/galleri_imgs/${data[2].image}`}
               alt={data[2].product_name}
