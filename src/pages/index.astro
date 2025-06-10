@@ -48,6 +48,8 @@ import Layout from "../layouts/Layout.astro";
     </section>
     <section class="baggrund_menu_img" id="se_menu">
       <div class="menu_grid">
+        <!-- Hver række er et menupunkt i griddet -->
+        <!-- "usynlig"-spans bruges til at justere spacing visuelt, så der kommer et pænere mellemrum mellem kaffe og pris - har skrevet 25 for bare et få det til at passe i bredden kunne ligeså godt have været "XX" -->
         <div>
           <span>espresso</span><span>25</span><span class="usynlig">25</span>
         </div>
@@ -258,9 +260,9 @@ import Layout from "../layouts/Layout.astro";
         display: block;
         margin-left: auto;
         margin-right: auto;
-        transition: 0.3s ease;
+        transition: 0.3s ease; /* Unødvendig – overskrives af transition nedenfor */
       }
-
+      /* Det her kunne bare være kommet op til den class ovenover*/
       .hero_logo {
         transition:
           transform 0.1s ease,
@@ -292,7 +294,11 @@ import Layout from "../layouts/Layout.astro";
 
       .cph {
         font-family: "Gabriela", serif;
-        font-size: clamp(2rem, 2vw, 1.875rem);
+        font-size: clamp(
+          2rem,
+          2vw,
+          1.875rem
+        ); /* Her er max mindre end min = modsigelse - kunne rettes til clamp(1.875rem, 2vw, 2rem); */
         color: var(--accent);
         writing-mode: vertical-rl;
         transform: rotate(180deg);
@@ -307,20 +313,22 @@ import Layout from "../layouts/Layout.astro";
         min-height: 300px;
       }
 
+      /* Styling af tekstindholdet i sektionen */
       .info_text {
         display: flex;
-        flex-direction: column;
-        justify-content: right;
-        text-align: right;
-        gap: 0.5rem;
+        flex-direction: column; /* elementerne stables vertikalt */
+        justify-content: right; /* den her har ingen effekt, da vi allerede har flex-direction: column (så kunne være undladt) */
+        text-align: right; /* teksten justeres til højre */
+        gap: 0.5rem; /* afstand mellem elementer */
       }
 
+      /* Linjerne der adskiller teksten */
       .line {
         border-top: 2px solid var(--accent);
         padding-top: 0.8rem;
         margin: 0.5rem 0 0.5rem 9.5rem;
       }
-
+      /* Får et id for at sørge for at den er længere end de andre (fejl at der er brugt px og ikke rem) */
       #longer {
         margin: 20px 0 20px 60px;
       }
@@ -378,47 +386,49 @@ import Layout from "../layouts/Layout.astro";
       /* KAFFE MENU */
 
       .baggrund_menu_img {
-        position: relative;
+        position: relative; /* gør så billedet kan placeres korrekt */
         padding: 5rem 0 5rem 6rem;
         background-color: var(--bg);
-        overflow: hidden;
+        overflow: hidden; /* gør så billedet ikke strækker indholdet */
       }
 
       .baggrund_menu_img::before {
-        content: "";
-        position: absolute;
+        content: ""; /* nødvendigt for at svg'en (eller pseudo-element) vises */
+        position: absolute; /* gør så svg'en kan placeres korrekt */
         top: -11rem;
         left: -20rem;
-        width: 600px;
+        width: 600px; /* bredde på svg'en - burde have været i rem: 37.5rem */
         height: 100%;
-        background-image: url("/src/assets/baggrund_menu_img.svg");
+        background-image: url("/src/assets/baggrund_menu_img.svg"); /* sti til lamperne som svg */
         background-repeat: no-repeat;
-        background-size: contain;
+        background-size: contain; /* gør at svg'en fylder hele containeren */
         background-position: left top;
-        z-index: 0;
-        opacity: 70%;
+        z-index: 0; /* sørger for at svg'en ligger bag menuen */
+        opacity: 70%; /* gør svg'en semitransparent */
       }
 
+      /* Grid-layout til kaffemenu */
       .menu_grid {
         position: relative;
-        z-index: 1;
+        z-index: 1; /* sørger for at menuen ligger over baggrundsbilledet */
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1.75rem 0rem; /* afstand mellem rækker og kolonner */
         width: 100%;
-        max-width: 800px;
+        max-width: 800px; /* maks bredde på menuen */
         font-family: "Futura", sans-serif;
         font-size: 1rem;
       }
-
+      /* Styling af hver række i menuen */
       .menu_grid > div {
         display: flex;
-        justify-content: space-around;
-        align-items: baseline;
+        justify-content: space-around; /* ens afstand mellem elementer */
+        align-items: baseline; /* lodret justering af elementer */
         padding: 0.3rem 0;
-        border-bottom: 1.5px solid var(--black);
+        border-bottom: 1.5px solid var(--black); /* linje under hver række */
       }
 
+      /* Usynlig tekst for spacing */
       .usynlig {
         color: var(--bg);
       }
